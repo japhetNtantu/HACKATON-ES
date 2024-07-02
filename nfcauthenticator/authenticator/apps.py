@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class AuthenticatorConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'authenticator'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "authenticator"

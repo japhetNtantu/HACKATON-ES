@@ -1,11 +1,13 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 
 class DeviceTypeChoiceModel(models.TextChoices):
     COMPUTER = ("Computer", "computer")
     SERVER = ("Server", "server")
+
 
 class EstiamUser(AbstractUser):
     username = models.CharField(
@@ -53,6 +55,7 @@ class EstiamUser(AbstractUser):
 class Material(models.Model):
     material_id = models.UUIDField(unique=True, auto_created=True, primary_key=True)
     user = models.ForeignKey(EstiamUser)
-    device_type = models.CharField(default=DeviceTypeChoiceModel.COMPUTER, choices=DeviceTypeChoiceModel.choices)
+    device_type = models.CharField(
+        default=DeviceTypeChoiceModel.COMPUTER, choices=DeviceTypeChoiceModel.choices
+    )
     ip_adress = models.IPAddressField(default=True, null=True)
-
