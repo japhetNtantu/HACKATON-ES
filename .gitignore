@@ -157,3 +157,5 @@ mp3_files/
 staticfiles/
 
 ekila_streams/local_settings.py
+
+.ruff_cache
