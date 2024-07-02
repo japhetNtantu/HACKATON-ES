@@ -9,7 +9,11 @@ class DeviceTypeChoiceModel(models.TextChoices):
     SERVER = ("Server", "server")
 
 
-class EstiamUser(AbstractUser):
+class Roles(models.TextChoices):
+    EMPLOYEE = "employee", "Employee"
+
+
+class EstiamUserModel(AbstractUser):
     username = models.CharField(
         _("username"),
         max_length=150,
@@ -23,6 +27,12 @@ class EstiamUser(AbstractUser):
     email = models.EmailField(_("email"), unique=True)
     confirm_number = models.CharField(_("confirm number"), max_length=1000, null=True)
     is_confirmed = models.BooleanField(_("is confirmed"), default=False)
+    roles = models.CharField(
+        max_length=50,
+        choices=Roles.choices,
+        default=Roles.EMPLOYEE,
+        verbose_name=_("role"),
+    )
     created_by = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -52,10 +62,23 @@ class EstiamUser(AbstractUser):
         )
 
 
+class EkilaUser(EstiamUserModel):
+    class Meta(EstiamUserModel.Meta):
+        verbose_name = _("User")
+        verbose_name_plural = _("User management")
+
+
 class Material(models.Model):
     material_id = models.UUIDField(unique=True, auto_created=True, primary_key=True)
-    user = models.ForeignKey(EstiamUser)
-    device_type = models.CharField(
-        default=DeviceTypeChoiceModel.COMPUTER, choices=DeviceTypeChoiceModel.choices
+    user = models.ForeignKey(
+        EkilaUser,
+        on_delete=models.CASCADE,
+        related_name="user_material",
+        verbose_name=_("user"),
     )
-    ip_adress = models.IPAddressField(default=True, null=True)
+    device_type = models.CharField(
+        default=DeviceTypeChoiceModel.COMPUTER,
+        choices=DeviceTypeChoiceModel.choices,
+        max_length=140,
+    )
+    ip_adress = models.CharField(default=True, null=True, max_length=120)
