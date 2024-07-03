@@ -81,4 +81,4 @@ class Material(models.Model):
         choices=DeviceTypeChoiceModel.choices,
         max_length=140,
     )
-    ip_adress = models.CharField(default=True, null=True, max_length=120)
+    ip_adress = models.CharField(default="", null=True, max_length=120)
