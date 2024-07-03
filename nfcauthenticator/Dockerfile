@@ -46,13 +46,12 @@ RUN apt-get update; \
 
 WORKDIR /app
 RUN pip3 install poetry && pip3 install uwsgi daphne
-RUN poetry export -f requirements.txt --output requirements.txt
 COPY . /app
 COPY requirements.txt /app/requirements.txt
 RUN pip3 install -r /app/requirements.txt
 COPY prod.sh /prod.sh
 RUN chown -R estiamadm:estiamadm /app
-RUN tr -d '\r' < /entrypoint.sh > /tmp/entrypoint.sh && mv /tmp/entrypoint.sh /entrypoint.sh
+RUN tr -d '\r' < /prod.sh > /tmp/prod.sh && mv /tmp/prod.sh /prod.sh
 RUN chmod +x /prod.sh
 ENTRYPOINT ["/prod.sh"]
 EXPOSE $DJANGO_DEV_SERVER_PORT
