@@ -45,7 +45,7 @@ RUN apt-get update; \
         gosu nobody true
 
 WORKDIR /app
-RUN pip3 install poetry && pip3 install uwsgi daphne
+RUN pip3 install uwsgi daphne
 COPY . /app
 COPY requirements.txt /app/requirements.txt
 RUN pip3 install -r /app/requirements.txt

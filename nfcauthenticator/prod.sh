@@ -33,9 +33,8 @@ mkdir -p ${DJANGO_STATIC_ROOT} && chown root:www-data ${DJANGO_STATIC_ROOT}
 mkdir -p ${DJANGO_MEDIA_ROOT} && chown root:www-data ${DJANGO_MEDIA_ROOT}
 mkdir -p ${POSTGRES_DATA} && chown root:www-data ${POSTGRES_DATA}
 
-make wait_db
-make migrate
-make collectstatic
+python manage.py makemigrations && python manage.py migrate --noinput
+python manage.py collectstatic --noinput
 
 USER_EXISTS="from django.contrib.auth import get_user_model; User = get_user_model(); exit(User.objects.exists())"
 python manage.py shell -c "$USER_EXISTS" && python manage.py createsuperuser --username admin --email admin@gmail.com --noinput

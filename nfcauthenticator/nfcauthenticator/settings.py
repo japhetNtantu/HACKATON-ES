@@ -202,3 +202,6 @@ MAX_VALUE = 99999
 
 
 SITE_ID = 1
+
+STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT", "/var/www/static")
+STATIC_URL = "/static/"

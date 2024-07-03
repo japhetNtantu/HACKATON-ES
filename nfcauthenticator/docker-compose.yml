@@ -1,7 +1,7 @@
 version: "1.0"
 
 services:
-  db:
+  estiam_db:
     image: postgres
     restart: unless-stopped
     environment:
@@ -28,7 +28,7 @@ services:
       - "staticfiles-data:/var/www/static"
       - "media-data:/var/www/media"
     depends_on:
-      - db
+      - estiam_db
       - redis
     ports:
       - "8000:8000"
