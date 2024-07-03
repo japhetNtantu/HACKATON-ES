@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "authenticator",
     "rest_framework",
+    "daphne",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "django.contrib.staticfiles",
@@ -61,7 +62,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
+# WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
+ASGI_APPLICATION = "nfcauthenticator.asgi.application"
 
 
 # Database
@@ -73,6 +75,9 @@ WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
 import os
 
 DATABASES = {
