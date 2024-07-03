@@ -62,7 +62,7 @@ class EstiamUserModel(AbstractUser):
         )
 
 
-class EkilaUser(EstiamUserModel):
+class EstiamUser(EstiamUserModel):
     class Meta(EstiamUserModel.Meta):
         verbose_name = _("User")
         verbose_name_plural = _("User management")
@@ -71,7 +71,7 @@ class EkilaUser(EstiamUserModel):
 class Material(models.Model):
     material_id = models.UUIDField(unique=True, auto_created=True, primary_key=True)
     user = models.ForeignKey(
-        EkilaUser,
+        EstiamUser,
         on_delete=models.CASCADE,
         related_name="user_material",
         verbose_name=_("user"),
