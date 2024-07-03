@@ -22,9 +22,9 @@ if [ -z "$POSTGRES_DATA" ]; then
 fi
 
 
-while ! PGPASSWORD=${PGPASS} psql -h ${POSTGRES_HOST} -U postgres -c '\q'; do echo "En attente du demarrage de postgresql..." && sleep 1; done
-if ! PGPASSWORD=${PGPASS}  psql -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -lqt | cut -d \| -f 1 | cut -d ' ' -f 2 | grep -q "^ekila_db$"; then
-    PGPASSWORD=${PGPASS} createdb -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} estiam_db
+while ! PGPASSWORD=8Fny?aXEFkh9ePA3 psql -h ${POSTGRES_HOST} -U postgres -c '\q'; do echo "En attente du demarrage de postgresql..." && sleep 1; done
+if ! PGPASSWORD=8Fny?aXEFkh9ePA3  psql -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -lqt | cut -d \| -f 1 | cut -d ' ' -f 2 | grep -q "^estiam_db$"; then
+    PGPASSWORD=8Fny?aXEFkh9ePA3 createdb -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} estiam_db
 else
     echo "La database existe déjà..."
 fi
