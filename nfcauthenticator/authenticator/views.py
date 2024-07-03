@@ -216,13 +216,13 @@ class EstiamAuthViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         sending_email_thread = threading.Thread(
             target=MailManagement.send_code_for_verification,
-            args=("masterivanic@gmail.com",),
+            args=(serializer.data["email"],),
         )
         sending_email_thread.start()
         return Response(
             {
                 "username": serializer.data["username"],
-                "email": "masterivanic@gmail.com",
+                "email": serializer.data["email"],
                 "message": "Authentication Successful. "
                 f"Please confirm your email with code send to your email {serializer.data['email']}",
             },
