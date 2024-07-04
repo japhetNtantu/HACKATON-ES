@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .welcome-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .balloon {
+            width: 100px;
+            height: 125px;
+            background-color: rgba(255, 0, 0, 0.7);
+            border-radius: 50%;
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .balloon:before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid rgba(255, 0, 0, 0.7);
+            position: absolute;
+            bottom: -5px;
+            left: 45px;
+        }
+
+        .balloon:nth-child(2) {
+            left: -60px;
+            top: -50px;
+            background-color: rgba(0, 255, 0, 0.7);
+            animation-delay: -1s;
+        }
+
+        .balloon:nth-child(2):before {
+            border-bottom-color: rgba(0, 255, 0, 0.7);
+        }
+
+        .balloon:nth-child(3) {
+            right: -60px;
+            top: -80px;
+            background-color: rgba(0, 0, 255, 0.7);
+            animation-delay: -2s;
+        }
+
+        .balloon:nth-child(3):before {
+            border-bottom-color: rgba(0, 0, 255, 0.7);
+        }
+
+        .balloon:nth-child(4) {
+            left: -100px;
+            bottom: -50px;
+            background-color: rgba(255, 255, 0, 0.7);
+            animation-delay: -3s;
+        }
+
+        .balloon:nth-child(4):before {
+            border-bottom-color: rgba(255, 255, 0, 0.7);
+        }
+
+        .balloon:nth-child(5) {
+            right: -100px;
+            bottom: -80px;
+            background-color: rgba(255, 0, 255, 0.7);
+            animation-delay: -4s;
+        }
+
+        .balloon:nth-child(5):before {
+            border-bottom-color: rgba(255, 0, 255, 0.7);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="welcome-container">
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <h1 class="display-4 mb-4">Welcome!</h1>
+        {% if username %}
+        <p class="lead mb-4">We're excited to have you here, {{ username }}!</p>
+        {% else %}
+        <p class="lead mb-4">We're excited to have you here!</p>
+        {% endif %}
+        <button class="btn btn-primary btn-lg" onclick="showMessage()">Get Started</button>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showMessage() {
+            alert("Welcome! We're glad you're here.");
+        }
+    </script>
+</body>
+
+</html>

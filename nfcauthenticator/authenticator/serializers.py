@@ -112,6 +112,45 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return EstiamUser.objects.create_user(**validate_data)
 
 
+class SendMailSerialiazer(serializers.Serializer):
+    user_code = serializers.IntegerField()
+
+    def validate(self, attrs):
+        user_uuid = attrs.get("user_code")
+        try:
+            obj = EstiamUser.objects.get(user_code=user_uuid)
+            self.email = obj.email
+        except EstiamUser.DoesNotExist:
+            raise serializers.ValidationError("User does not exists")
+        return attrs
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.pop("user_code", None)
+        representation.update({"email": self.email})
+        return representation
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    code_otp = serializers.CharField()
+
+    def validate(self, attrs):
+        otp_num = attrs.get("code_otp")
+        if not EstiamUser.objects.filter(confirm_number=otp_num).exists():
+            raise serializers.ValidationError("Unrecognize otp code or not valid")
+        else:
+            self.obj_user = EstiamUser.objects.filter(confirm_number=otp_num).first()
+        return attrs
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.pop("code_otp", None)
+        representation.update(
+            {"email": self.obj_user.email, "username": self.obj_user.username}
+        )
+        return representation
+
+
 class SendPasswordResetEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
 

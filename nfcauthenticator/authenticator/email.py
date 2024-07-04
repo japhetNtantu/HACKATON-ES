@@ -1,5 +1,4 @@
 import random
-from typing import Dict
 
 from authenticator.models import EstiamUser
 from django.conf import settings
@@ -17,7 +16,7 @@ class MailManagement:
             template_name="verify_email.html",
             context={
                 "user": user,
-                "code": otp,
+                "code": f"{settings.HOST_BACKEND}/?code={otp}",
                 "email_for_reply": settings.EMAIL_FOR_REPLY,
             },
         )
