@@ -28,6 +28,9 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "authenticator",
     "rest_framework",
+    "daphne",
+    "django_htmx",
+    "corsheaders",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "django.contrib.staticfiles",
@@ -41,6 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "nfcauthenticator.urls"
@@ -61,7 +65,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
+# WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
+ASGI_APPLICATION = "nfcauthenticator.asgi.application"
 
 
 # Database
@@ -73,6 +78,9 @@ WSGI_APPLICATION = "nfcauthenticator.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
 import os
 
 DATABASES = {
@@ -183,17 +191,35 @@ REST_FRAMEWORK = {
 
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_HOST = "mail.ekilaradio.fr"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "p.mbargua@ekilaradio.fr"
+EMAIL_HOST_PASSWORD = "jmMBARGA@237"
+DEFAULT_FROM_EMAIL = "e-radio@ekilaradio.fr"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_FOR_REPLY = DEFAULT_FROM_EMAIL
 
 # intervalle des valeurs OTP generes
-MIN_VALUE = 10000
-MAX_VALUE = 99999
+MIN_VALUE = 100000
+MAX_VALUE = 999999
 
 
 SITE_ID = 1
+
+STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT")
+STATIC_URL = "/static/"
+
+# cors configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # frontend url to trust
+]
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = ("http://localhost:3000",)
+
+HOST_BACKEND = "http://localhost:8000"
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

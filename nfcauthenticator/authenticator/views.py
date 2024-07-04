@@ -6,12 +6,14 @@ from authenticator.serializers import JWTSerializer
 from authenticator.serializers import ObtainTokenSerializer
 from authenticator.serializers import PasswordResetConfirmSerializer
 from authenticator.serializers import ResendActivationCode
+from authenticator.serializers import SendMailSerialiazer
 from authenticator.serializers import SendPasswordResetEmailSerializer
 from authenticator.serializers import UserChangePasswordSerializer
 from authenticator.serializers import UserProfileSerializer
 from authenticator.serializers import UserRegistrationSerializer
 from authenticator.serializers import UserSerializer
 from authenticator.serializers import VerificationEmailSerializer
+from authenticator.serializers import VerifyOTPSerializer
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -61,6 +63,10 @@ class EstiamAuthViewSet(viewsets.GenericViewSet):
                 return TokenBlacklistSerializer
             case "nfc_authentication":
                 return JWTSerializer
+            case "send_email":
+                return SendMailSerialiazer
+            case "verify_code_otp":
+                return VerifyOTPSerializer
             case _:
                 return self.serializer_class
 
@@ -228,3 +234,30 @@ class EstiamAuthViewSet(viewsets.GenericViewSet):
             },
             status=status.HTTP_200_OK,
         )
+
+    @action(detail=False, methods=("POST",), permission_classes=(), url_path="send-otp")
+    def send_email(self, request: Request) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.data["email"]
+        sending_email_thread = threading.Thread(
+            target=MailManagement.send_code_for_verification,
+            args=(email,),
+        )
+        sending_email_thread.start()
+        return Response(
+            {
+                "email": serializer.data["email"],
+                "message": "Authentication Successful. "
+                f"Please confirm your email with code send to your email {serializer.data['email']}",
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    @action(
+        detail=False, methods=("POST",), permission_classes=(), url_path="verify-otp"
+    )
+    def verify_code_otp(self, request: Request) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

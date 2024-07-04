@@ -1,0 +1,39 @@
+version: "1.0"
+
+services:
+  estiam_db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=8Fny?aXEFkh9ePA3
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data/"
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    expose:
+      - 6379
+
+  estiam-hackathon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: estiam-hack-back:1.0
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=estiam_db
+      - POSTGRES_PORT=5432
+    volumes:
+      - .:/app
+      - "staticfiles-data:/var/www/static"
+      - "media-data:/var/www/media"
+    depends_on:
+      - estiam_db
+      - redis
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres-data:
+  staticfiles-data:
+  media-data:

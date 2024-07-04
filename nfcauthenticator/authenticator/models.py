@@ -14,6 +14,7 @@ class Roles(models.TextChoices):
 
 
 class EstiamUserModel(AbstractUser):
+    user_code = models.IntegerField(default=787878)
     username = models.CharField(
         _("username"),
         max_length=150,
